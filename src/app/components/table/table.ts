@@ -192,6 +192,7 @@ export class TableService {
                     [inline]="true"
                     [lazy]="lazy"
                     (onLazyLoad)="onLazyItemLoad($event)"
+                    (onScroll)="onContainerScroll($event)"
                     [loaderDisabled]="true"
                     [showSpacer]="false"
                     [showLoader]="loadingBodyTemplate"
@@ -444,6 +445,7 @@ export class Table implements OnInit, AfterViewInit, AfterContentInit, Blockable
      * @group Props
      */
     @Input() contextMenuSelectionMode: string = 'separate';
+    @Output() onScrollEmit: EventEmitter<any> = new EventEmitter();
     /**
      * A property to uniquely identify a record in data.
      * @group Props
@@ -2299,6 +2301,10 @@ export class Table implements OnInit, AfterViewInit, AfterContentInit, Blockable
             ...event,
             rows: <number>event.last - <number>event.first
         });
+    }
+
+    onContainerScroll(event:any){
+        this.onScrollEmit.emit();
     }
     /**
      * Resets scroll to top.
