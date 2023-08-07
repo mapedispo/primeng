@@ -181,6 +181,10 @@ export class TreeTableService {
             </div>
 
             <div class="p-treetable-scrollable-wrapper" *ngIf="scrollable">
+            <ng-container *ngIf="!virtualScroll;then vsDisabled;else vsEnabled;"></ng-container>
+            </div>
+
+            <ng-template #vsEnabled>
                 <div
                     class="p-treetable-scrollable-view p-treetable-frozen-view"
                     *ngIf="frozenColumns || frozenBodyTemplate"
@@ -191,7 +195,20 @@ export class TreeTableService {
                     [scrollHeight]="scrollHeight"
                 ></div>
                 <div class="p-treetable-scrollable-view" #scrollableView [ttScrollableView]="columns" [frozen]="false" [scrollHeight]="scrollHeight" [ngStyle]="{ left: frozenWidth, width: 'calc(100% - ' + frozenWidth + ')' }"></div>
-            </div>
+                </ng-template>
+            
+           <ng-template #vsDisabled>
+                <div
+                    class="p-treetable-scrollable-view p-treetable-frozen-view"
+                    *ngIf="frozenColumns || frozenBodyTemplate"
+                    #scrollableFrozenView
+                    [ttScrollableView]="frozenColumns"
+                    [frozen]="true"
+                    [ngStyle]="{ width: frozenWidth }"
+                    [scrollHeight]="scrollHeight"
+                ></div>
+                <div class="p-treetable-scrollable-view" #scrollableView [ttScrollableView]="columns" [frozen]="false" [scrollHeight]="scrollHeight" [ngStyle]="{ left: frozenWidth, width: 'calc(100% - ' + frozenWidth + ')' }"></div>
+            </ng-template>
 
             <p-paginator
                 [rows]="rows"
